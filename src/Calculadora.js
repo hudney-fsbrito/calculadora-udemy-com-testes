@@ -1,17 +1,44 @@
 import React, { useState } from 'react';
 import './Calculadora.css';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
+import CalculadoraService from "./Calculadora.service";
+
 
 function Calculadora() {
 
-  const [txtNumero, setTxtNumero] = useState('0')
+  const [Calcular, concatenarNumero, SOMA, SUBTRACAO, MULTIPLICACAO, DIVISAO] = CalculadoraService();
+
+  const [txtNumero, setTxtNumero] = useState('0');
+  const [numero1, setNumero1] = useState('0');
+  const [numero2, setNumero2] = useState(null);
+  const [operacao, setOperacao] = useState(null)
 
   function AdicionarNumero(numero) {
-    setTxtNumero(txtNumero + numero)
+    let resultado;
+    if (operacao === null){
+      resultado = concatenarNumero(numero1, numero)
+      setNumero1(resultado)
+    }else{
+      resultado = concatenarNumero(numero2, numero)
+      setNumero2(resultado)
+    }
+    setTxtNumero(resultado)
   }
 
   function DefinirOperacao(op) {
-    setTxtNumero(op)
+
+    if(operacao === null){
+      setOperacao(op)
+    }
+    if (numero2 != null) {
+      const resultado =  Calcular(parseFloat(numero1), parseFloat(numero2), operacao)
+      setTxtNumero(resultado.toString())
+      setNumero1(resultado)
+      setNumero2(null)
+      setOperacao(op)
+      
+    }
+
   }
 
   return (
@@ -88,10 +115,10 @@ function Calculadora() {
             <Button variant="light" onClick={() => { AdicionarNumero("0") }}>0</Button>
           </Col>
           <Col>
-            <Button variant="light">.</Button>
+            <Button variant="light" onClick={() => { AdicionarNumero(".") }}>.</Button>
           </Col>
           <Col>
-            <Button variant="success">=</Button>
+            <Button variant="success" >=</Button>
           </Col>
           <Col>
             <Button variant="light" onClick={() => { DefinirOperacao("+") }}>+</Button>
