@@ -13,6 +13,7 @@ function Calculadora() {
   const [numero2, setNumero2] = useState(null);
   const [operacao, setOperacao] = useState(null)
 
+  //Adiciona número na variável e concatena
   function AdicionarNumero(numero) {
     let resultado;
     if (operacao === null){
@@ -25,20 +26,40 @@ function Calculadora() {
     setTxtNumero(resultado)
   }
 
+  //Define a operção ao clicar pela primera vez.
+  //Executa a função Calcula() ao clicar pela segunda vez e Define a próxima operaçao.
   function DefinirOperacao(op) {
 
     if(operacao === null){
       setOperacao(op)
+      return;
     }
-    if (numero2 != null) {
+    if (numero2 !== null) {
       const resultado =  Calcular(parseFloat(numero1), parseFloat(numero2), operacao)
-      setTxtNumero(resultado.toString())
-      setNumero1(resultado)
+      setNumero1(resultado.toString())
       setNumero2(null)
       setOperacao(op)
+      setTxtNumero(resultado.toString())
       
     }
 
+  }
+
+  //Faz a função de igual
+  function acaoCalcular() {
+    if(numero2 === null){
+      return;
+    }
+    const resultado =  Calcular(parseFloat(numero1), parseFloat(numero2), operacao)
+    setTxtNumero(resultado.toString())
+  }
+
+  //Faz a função de limpar a tela e os dados
+  function limpar() {
+    setTxtNumero('0')
+    setNumero1('0')
+    setNumero2(null)
+    setOperacao(null)
   }
 
   return (
@@ -55,7 +76,7 @@ function Calculadora() {
       <Container>
         <Row>
           <Col xs="3">
-            <Button variant='danger'>C</Button>
+            <Button variant='danger' onClick={limpar}>C</Button>
           </Col>
           <Col xs="9">
             <Form.Control
@@ -64,6 +85,7 @@ function Calculadora() {
               className="text-end"
               readOnly='readonly'
               value={txtNumero}
+              data-testid="txtNumeros"
             />
           </Col>
         </Row>
@@ -79,7 +101,7 @@ function Calculadora() {
             <Button variant="light" onClick={() => { AdicionarNumero("9") }}>9</Button>
           </Col>
           <Col>
-            <Button variant="light" onClick={() => { DefinirOperacao("/") }}>/</Button>
+            <Button variant="light" onClick={() => { DefinirOperacao(DIVISAO) }}>/</Button>
           </Col>
         </Row>
         <Row>
@@ -93,7 +115,7 @@ function Calculadora() {
             <Button variant="light" onClick={() => { AdicionarNumero("6") }}>6</Button>
           </Col>
           <Col>
-            <Button variant="light" onClick={() => { DefinirOperacao("*") }}>*</Button>
+            <Button variant="light" onClick={() => { DefinirOperacao(MULTIPLICACAO) }}>*</Button>
           </Col>
         </Row>
         <Row>
@@ -107,7 +129,7 @@ function Calculadora() {
             <Button variant="light" onClick={() => { AdicionarNumero("3") }}>3</Button>
           </Col>
           <Col>
-            <Button variant="light" onClick={() => { DefinirOperacao("-") }}>-</Button>
+            <Button variant="light" onClick={() => { DefinirOperacao(SUBTRACAO) }}>-</Button>
           </Col>
         </Row>
         <Row>
@@ -118,10 +140,10 @@ function Calculadora() {
             <Button variant="light" onClick={() => { AdicionarNumero(".") }}>.</Button>
           </Col>
           <Col>
-            <Button variant="success" >=</Button>
+            <Button variant="success" onClick={acaoCalcular}>=</Button>
           </Col>
           <Col>
-            <Button variant="light" onClick={() => { DefinirOperacao("+") }}>+</Button>
+            <Button variant="light" onClick={() => { DefinirOperacao(SOMA) }}>+</Button>
           </Col>
         </Row>
       </Container>
