@@ -67,16 +67,25 @@ function Calculadora() {
       className='container'
       style={{
         background: 'transparent !important',
-        backgroundColor: '#007bff',
+        backgroundColor: '#031120',
         padding: '5px',
-        width: '400px',
-        borderRadius: '4px'
+        paddingTop: '20px',
+        width: '300px',
+        height: '350px',
+        borderRadius: '25px',
+        boxShadow: '10px 10px 20px 10px gray'
       }}>
 
       <Container>
         <Row>
           <Col xs="3">
-            <Button variant='danger' onClick={limpar}>C</Button>
+            <Button 
+            variant='danger' 
+            onClick={limpar}
+            style={{
+              boxShadow:'inset 0px 0px 10px #700505'
+            }}
+            >C</Button>
           </Col>
           <Col xs="9">
             <Form.Control
